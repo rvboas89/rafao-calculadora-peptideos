@@ -15,7 +15,8 @@ test("a página tem identidade, campos essenciais e aviso de segurança", async 
     assert.match(html, new RegExp(`id="${id}"`));
   }
   assert.match(html, /não recomenda dose, frequência ou tratamento/i);
-  assert.match(html, /type="module" src="\.\/app\.mjs"/);
+  assert.match(html, /type="module" src="\.\/app\.mjs\?v=4"/);
+  assert.match(html, /href="\.\/styles\.css\?v=4"/);
 });
 
 test("o manifesto e o service worker usam caminhos relativos ao projeto", async () => {
@@ -29,7 +30,8 @@ test("o manifesto e o service worker usam caminhos relativos ao projeto", async 
   assert.ok(manifest.icons.every((icon) => icon.src.startsWith("./")));
   assert.match(worker, /self\.registration\.scope/);
   assert.match(worker, /new URL\("logo\.svg"/);
-  assert.match(worker, /new URL\("syringe-visual\.mjs"/);
+  assert.match(worker, /new URL\("app\.mjs\?v=4"/);
+  assert.match(worker, /new URL\("syringe-visual\.mjs\?v=4"/);
   assert.doesNotMatch(worker, /https:\/\//);
 });
 
