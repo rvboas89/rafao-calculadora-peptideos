@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">RvB Lab</title>
+  <desc id="desc">Monograma RvB com barra de musculação e estrutura molecular</desc>
+  <defs>
+    <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d48aff"/><stop offset=".5" stop-color="#b14cff"/><stop offset="1" stop-color="#7022a8"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <path d="M256 24 448 134v244L256 488 64 378V134z" fill="#0b0710" stroke="#382346" stroke-width="8"/>
+  <path d="M256 44 430 144v224L256 468 82 368V144z" fill="none" stroke="url(#purple)" stroke-width="3" opacity=".8"/>
+  <g fill="none" stroke="#b8ff36" stroke-width="7" stroke-linecap="round" filter="url(#glow)"><path d="M97 161h318"/><path d="M119 139v44m22-54v64M393 139v44m-22-54v64"/></g>
+  <g fill="none" stroke="#b14cff" stroke-width="5" opacity=".8">
+    <path d="m110 344 42-33 37 29 48-39"/><circle cx="110" cy="344" r="9" fill="#0b0710"/><circle cx="152" cy="311" r="9" fill="#0b0710"/><circle cx="189" cy="340" r="9" fill="#0b0710"/><circle cx="237" cy="301" r="9" fill="#0b0710"/>
+    <path d="m275 330 42-33 39 28 44-35"/><circle cx="275" cy="330" r="9" fill="#0b0710"/><circle cx="317" cy="297" r="9" fill="#0b0710"/><circle cx="356" cy="325" r="9" fill="#0b0710"/><circle cx="400" cy="290" r="9" fill="#0b0710"/>
+  </g>
+  <text x="256" y="288" fill="url(#purple)" font-family="Impact, Arial Black, sans-serif" font-size="137" font-style="italic" font-weight="900" letter-spacing="-10" text-anchor="middle">RvB</text>
+  <text x="256" y="397" fill="#b8ff36" font-family="Courier New, monospace" font-size="28" font-weight="700" letter-spacing="12" text-anchor="middle">LAB</text>
+  <path d="M180 419h152" stroke="#b8ff36" stroke-width="3"/>
+</svg>
