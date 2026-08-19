@@ -28,6 +28,8 @@ test("o manifesto e o service worker usam caminhos relativos ao projeto", async 
   assert.equal(manifest.scope, "./");
   assert.ok(manifest.icons.every((icon) => icon.src.startsWith("./")));
   assert.match(worker, /self\.registration\.scope/);
+  assert.match(worker, /new URL\("logo\.svg"/);
+  assert.match(worker, /new URL\("syringe-visual\.mjs"/);
   assert.doesNotMatch(worker, /https:\/\//);
 });
 
