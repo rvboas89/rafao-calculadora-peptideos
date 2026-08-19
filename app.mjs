@@ -4,7 +4,7 @@ import {
   formatPositiveMeasurement,
   parseLocaleNumber,
 } from "./calculator.mjs";
-import { buildSyringeScale, getSyringePresentation } from "./syringe-visual.mjs";
+import { buildSyringeScale, getSyringeGeometry, getSyringePresentation } from "./syringe-visual.mjs";
 
 const warningCopy = {
   CAPACITY_EXCEEDED: "O volume calculado ultrapassa a capacidade da seringa selecionada. Revise os dados e confirme com um profissional habilitado.",
@@ -47,6 +47,13 @@ function updateSegmentedControl() {
 }
 
 function renderSyringeScale(capacity) {
+  const geometry = getSyringeGeometry(capacity);
+  const assembly = byId("syringeAssembly");
+  assembly.classList.remove("capacity-50", "capacity-100");
+  assembly.classList.add(geometry.className);
+  assembly.style.setProperty("--barrel-ratio", `${geometry.barrelPercent}%`);
+  byId("barrelMaximumLabel").textContent = geometry.maximumLabel;
+  byId("barrelVolumeLabel").textContent = geometry.volumeLabel;
   const scale = byId("syringeScale");
   const ticks = buildSyringeScale(capacity).map((tick) => {
     const element = document.createElement("i");
