@@ -41,6 +41,7 @@ test("o compartilhamento usa a URL atual e tem alternativa por WhatsApp", async 
 test("o workflow publica o conteúdo estático no GitHub Pages", async () => {
   const workflow = await read(".github/workflows/pages.yml");
   assert.match(workflow, /actions\/deploy-pages@v4/);
+  assert.match(workflow, /enablement: true/);
   assert.match(workflow, /path: \./);
   assert.match(workflow, /pages: write/);
 });
