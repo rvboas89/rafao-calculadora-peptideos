@@ -3,8 +3,8 @@ import {
   formatNumber,
   formatPositiveMeasurement,
   parseLocaleNumber,
-} from "./calculator.mjs";
-import { buildSyringeScale, getSyringeGeometry, getSyringePresentation } from "./syringe-visual.mjs";
+} from "./calculator.mjs?v=4";
+import { buildSyringeScale, getSyringeGeometry, getSyringePresentation } from "./syringe-visual.mjs?v=4";
 
 const warningCopy = {
   CAPACITY_EXCEEDED: "O volume calculado ultrapassa a capacidade da seringa selecionada. Revise os dados e confirme com um profissional habilitado.",
@@ -194,7 +194,7 @@ window.addEventListener("appinstalled", () => {
 });
 
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js?v=4"));
 }
 
 updateConversion();
