@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#062b37">
+    <meta name="theme-color" content="#08050d">
     <meta name="description" content="Conversões matemáticas de diluição para seringas U-100, com doses em mg ou mcg.">
     <title>Rafão Calculadora de Peptídeos</title>
     <link rel="manifest" href="./manifest.webmanifest">
@@ -12,50 +12,69 @@
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
+    <div class="ambient-grid" aria-hidden="true"></div>
     <main class="calculator-shell">
       <div class="calculator-frame">
         <header class="hero">
-          <p class="eyebrow">Conversões de diluição</p>
-          <h1>Rafão Calculadora de Peptídeos</h1>
-          <p>Use os dados do seu frasco e da diluição para visualizar a conversão em uma seringa U-100.</p>
+          <div class="system-bar" aria-label="Status da calculadora">
+            <span class="system-status"><i></i>Sistema online</span>
+            <span>RvB Lab // U-100</span>
+            <span class="system-code">SYS.01</span>
+          </div>
+
+          <div class="brand-lockup">
+            <img class="brand-logo" src="./logo.svg" alt="Logo RvB Lab, musculação e ciência">
+            <div class="brand-copy">
+              <p class="eyebrow">Underground Peptide Lab</p>
+              <h1>Rafão <span>Calculadora</span><br>de Peptídeos</h1>
+              <p>Precisão matemática para visualizar sua diluição em seringas U-100.</p>
+            </div>
+          </div>
+
           <div class="share-actions">
-            <button type="button" id="shareButton" class="header-button">Compartilhar</button>
-            <button type="button" id="whatsAppButton" class="header-button header-button-secondary">Enviar pelo WhatsApp</button>
-            <button type="button" id="installButton" class="header-button header-button-secondary" hidden>Instalar no celular</button>
+            <button type="button" id="shareButton" class="header-button"><span aria-hidden="true">⌁</span> Compartilhar</button>
+            <button type="button" id="whatsAppButton" class="header-button header-button-secondary"><span aria-hidden="true">↗</span> WhatsApp</button>
+            <button type="button" id="installButton" class="header-button header-button-secondary" hidden><span aria-hidden="true">↓</span> Instalar</button>
           </div>
         </header>
 
         <aside class="clinical-note">
-          <p><strong>Uso informativo:</strong> esta ferramenta realiza conversões matemáticas e não recomenda dose, frequência ou tratamento. Confirme os dados com um profissional habilitado antes de qualquer aplicação.</p>
-          <p><strong>Seringa U-100:</strong> confirme no rótulo que sua seringa é U-100. Seringas com outra calibração produzem resultados diferentes. A representação da seringa é apenas aproximada e não substitui as marcações físicas.</p>
+          <div class="note-symbol" aria-hidden="true">!</div>
+          <div>
+            <p><strong>Protocolo de segurança</strong></p>
+            <p>Esta ferramenta realiza conversões matemáticas e não recomenda dose, frequência ou tratamento. Confirme os dados com um profissional habilitado antes de qualquer aplicação.</p>
+            <p><strong>Use apenas seringa U-100.</strong> Outra calibração produz resultados diferentes. A representação digital é aproximada e não substitui as marcações físicas.</p>
+          </div>
         </aside>
 
         <form id="calculatorForm" class="calculator-card" novalidate>
+          <div class="card-terminal-line"><span>CONFIGURAÇÃO DO PROTOCOLO</span><span>INPUT://READY</span></div>
+
           <section aria-labelledby="frasco-title">
-            <h2 id="frasco-title">Frasco e diluição</h2>
+            <div class="section-heading"><span class="section-number">01</span><div><p>Composto base</p><h2 id="frasco-title">Frasco e diluição</h2></div></div>
             <div class="field-grid">
               <label>
-                <span>Conteúdo por frasco (mg)</span>
-                <input id="vialMg" inputmode="decimal" value="5" placeholder="Ex.: 5" aria-describedby="numero-ajuda">
+                <span>Conteúdo por frasco <b>mg</b></span>
+                <div class="input-shell"><input id="vialMg" inputmode="decimal" value="5" placeholder="Ex.: 5" aria-describedby="numero-ajuda"><i>MG</i></div>
               </label>
               <label>
                 <span>Quantidade de frascos</span>
-                <input id="vialCount" inputmode="numeric" value="1" placeholder="Ex.: 1">
+                <div class="input-shell"><input id="vialCount" inputmode="numeric" value="1" placeholder="Ex.: 1"><i>UN</i></div>
               </label>
               <label class="field-wide">
-                <span>Água adicionada por frasco (mL)</span>
-                <input id="waterMl" inputmode="decimal" value="2" placeholder="Ex.: 2">
+                <span>Água bacteriostática por frasco <b>mL</b></span>
+                <div class="input-shell"><input id="waterMl" inputmode="decimal" value="2" placeholder="Ex.: 2"><i>ML</i></div>
               </label>
             </div>
-            <p id="numero-ajuda" class="field-help">Você pode usar vírgula ou ponto nos números.</p>
+            <p id="numero-ajuda" class="field-help">Aceita vírgula ou ponto como separador decimal.</p>
           </section>
 
           <section aria-labelledby="dose-title">
-            <h2 id="dose-title">Dose informada</h2>
+            <div class="section-heading"><span class="section-number">02</span><div><p>Alvo matemático</p><h2 id="dose-title">Dose informada</h2></div></div>
             <div class="dose-row">
               <label>
                 <span>Valor da dose</span>
-                <input id="doseValue" inputmode="decimal" value="250" placeholder="Ex.: 250">
+                <div class="input-shell"><input id="doseValue" inputmode="decimal" value="250" placeholder="Ex.: 250"><i id="doseInputSuffix">MCG</i></div>
               </label>
               <label>
                 <span>Unidade</span>
@@ -69,21 +88,21 @@
           </section>
 
           <section aria-labelledby="seringa-title">
-            <h2 id="seringa-title">Seringa U-100</h2>
+            <div class="section-heading"><span class="section-number">03</span><div><p>Dispositivo</p><h2 id="seringa-title">Seringa U-100</h2></div></div>
             <div class="segmented-control" role="radiogroup" aria-label="Capacidade da seringa">
               <label class="selected">
                 <input type="radio" name="syringeCapacity" value="50" checked>
-                <span>50 unidades</span>
+                <span><b>50</b> UI <small>0,5 mL</small></span>
               </label>
               <label>
                 <input type="radio" name="syringeCapacity" value="100">
-                <span>100 unidades</span>
+                <span><b>100</b> UI <small>1,0 mL</small></span>
               </label>
             </div>
           </section>
 
           <section aria-labelledby="frequencia-title">
-            <h2 id="frequencia-title">Frequência informada</h2>
+            <div class="section-heading"><span class="section-number">04</span><div><p>Projeção de estoque</p><h2 id="frequencia-title">Frequência informada</h2></div></div>
             <div class="frequency-row">
               <label>
                 <span>Tipo</span>
@@ -94,41 +113,58 @@
               </label>
               <label>
                 <span id="frequencyLabel">Doses por dia</span>
-                <input id="frequencyValue" inputmode="decimal" value="1" placeholder="Ex.: 1">
+                <div class="input-shell"><input id="frequencyValue" inputmode="decimal" value="1" placeholder="Ex.: 1"><i>FREQ</i></div>
               </label>
             </div>
           </section>
 
           <div class="form-actions">
-            <button type="submit">Calcular quanto puxar</button>
-            <button type="button" id="clearButton" class="secondary-button">Limpar cálculo</button>
+            <button type="submit" class="calculate-button"><span>Executar cálculo</span><i aria-hidden="true">→</i></button>
+            <button type="button" id="clearButton" class="secondary-button">Limpar dados</button>
           </div>
         </form>
 
         <section id="errorPanel" class="error-panel" aria-live="assertive" aria-labelledby="erro-title" hidden>
+          <p class="panel-code">ERROR://INPUT</p>
           <h2 id="erro-title">Revise os campos</h2>
           <ul id="errorList"></ul>
         </section>
 
         <section id="resultCard" class="result-card" role="status" aria-live="polite" aria-atomic="true" aria-labelledby="resultado-title" hidden>
           <div class="result-heading">
-            <div>
-              <p class="eyebrow">Resultado matemático</p>
-              <h2 id="resultado-title">Quanto puxar na seringa</h2>
-            </div>
+            <div><p class="eyebrow">Output validado</p><h2 id="resultado-title">Quanto puxar na seringa</h2></div>
+            <span class="result-badge">U-100</span>
           </div>
+
           <div class="primary-result">
+            <p>Posição calculada</p>
             <span id="syringeUnitsResult"></span>
             <small id="volumeResult"></small>
           </div>
+
           <figure id="syringeFigure" class="syringe-figure">
-            <div class="syringe-body" aria-hidden="true">
-              <div id="syringeFill" class="syringe-fill"></div>
-              <div class="syringe-ticks"></div>
-              <div class="syringe-plunger"></div>
+            <div class="syringe-display-header">
+              <span>SYRINGE VISUALIZER</span>
+              <strong id="syringeScaleTitle">ESCALA 50 UI // 0,5 ML</strong>
             </div>
-            <figcaption><span>0 U</span><strong id="syringeCapacityText"></strong><span id="syringeMaximum"></span></figcaption>
+            <div class="syringe-console">
+              <div class="syringe-assembly" aria-hidden="true">
+                <div class="needle"><i></i></div>
+                <div class="needle-hub"></div>
+                <div class="syringe-barrel">
+                  <div id="syringeFill" class="syringe-liquid"><span class="liquid-shine"></span></div>
+                  <div id="syringeScale" class="syringe-scale"></div>
+                  <div id="syringeMarker" class="syringe-marker"><span id="syringeMarkerLabel">0 UI</span></div>
+                </div>
+                <div class="finger-flange"><i></i><i></i></div>
+                <div class="plunger-rod"></div>
+                <div class="plunger-cap"></div>
+              </div>
+              <div class="syringe-readout"><span>DOSE POSITION</span><strong id="syringeDigitalReadout">0,00 UI</strong><small id="syringeCapacityText">CAP. 50 UI</small></div>
+            </div>
+            <figcaption id="syringeCaption">Cada marca pequena representa 1 UI. Confirme a escala física da sua seringa.</figcaption>
           </figure>
+
           <dl class="result-grid">
             <div><dt>Dose equivalente</dt><dd id="doseMgResult"></dd><small id="doseMcgResult"></small></div>
             <div><dt>Concentração</dt><dd id="concentrationMgResult"></dd><small id="concentrationMcgResult"></small></div>
@@ -137,14 +173,14 @@
             <div class="result-grid-wide"><dt>Restante total</dt><dd id="totalRemainderMgResult"></dd><small id="totalRemainderMcgResult"></small></div>
             <div class="result-grid-wide"><dt>Duração estimada do estoque</dt><dd id="durationResult"></dd></div>
           </dl>
-          <p class="result-disclaimer">Os valores de estoque e duração são teóricos e não incluem perdas por reconstituição, espaço morto ou retenção no frasco ou na seringa.</p>
+          <p class="result-disclaimer">Estimativa teórica. Não inclui perdas por reconstituição, espaço morto ou retenção no frasco ou na seringa.</p>
           <aside id="warningPanel" class="warning-panel" aria-labelledby="alertas-title" hidden>
             <h3 id="alertas-title">Atenção antes de aplicar</h3>
             <ul id="warningList"></ul>
           </aside>
         </section>
 
-        <footer>Não armazena dados, não substitui orientação clínica e não indica dosagens.</footer>
+        <footer><img src="./logo.svg" alt="" aria-hidden="true"><p>RvB Underground Peptide Lab</p><span>Não armazena dados. Não indica dosagens. Não substitui orientação clínica.</span></footer>
       </div>
     </main>
     <script type="module" src="./app.mjs"></script>
