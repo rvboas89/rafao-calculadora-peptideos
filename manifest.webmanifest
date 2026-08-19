@@ -1,0 +1,19 @@
+{
+  "name": "Rafão Calculadora de Peptídeos",
+  "short_name": "Rafão Peptídeos",
+  "description": "Conversões matemáticas de diluição para seringas U-100.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#062b37",
+  "theme_color": "#062b37",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
