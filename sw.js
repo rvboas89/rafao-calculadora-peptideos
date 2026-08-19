@@ -1,12 +1,12 @@
-const CACHE_NAME = "rafao-peptideos-pages-v3";
+const CACHE_NAME = "rafao-peptideos-pages-v4";
 const BASE_URL = new URL(self.registration.scope);
 const APP_SHELL = [
   BASE_URL.href,
   new URL("index.html", BASE_URL).href,
-  new URL("styles.css", BASE_URL).href,
-  new URL("app.mjs", BASE_URL).href,
-  new URL("calculator.mjs", BASE_URL).href,
-  new URL("syringe-visual.mjs", BASE_URL).href,
+  new URL("styles.css?v=4", BASE_URL).href,
+  new URL("app.mjs?v=4", BASE_URL).href,
+  new URL("calculator.mjs?v=4", BASE_URL).href,
+  new URL("syringe-visual.mjs?v=4", BASE_URL).href,
   new URL("manifest.webmanifest", BASE_URL).href,
   new URL("icon.svg", BASE_URL).href,
   new URL("logo.svg", BASE_URL).href,
