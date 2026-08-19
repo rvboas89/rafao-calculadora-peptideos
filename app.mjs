@@ -4,6 +4,7 @@ import {
   formatPositiveMeasurement,
   parseLocaleNumber,
 } from "./calculator.mjs";
+import { buildSyringeScale, getSyringePresentation } from "./syringe-visual.mjs";
 
 const warningCopy = {
   CAPACITY_EXCEEDED: "O volume calculado ultrapassa a capacidade da seringa selecionada. Revise os dados e confirme com um profissional habilitado.",
@@ -26,6 +27,7 @@ function selectedCapacity() {
 function updateConversion() {
   const dose = parseLocaleNumber(byId("doseValue").value);
   const unit = byId("doseUnit").value;
+  byId("doseInputSuffix").textContent = unit.toUpperCase();
   byId("conversion").textContent = Number.isFinite(dose)
     ? `Conversão automática: ${formatNumber(dose, 4)} ${unit} = ${formatNumber(unit === "mcg" ? dose / 1000 : dose * 1000, 4)} ${unit === "mcg" ? "mg" : "mcg"}`
     : "Digite uma dose válida para ver a conversão.";
@@ -41,6 +43,25 @@ function updateSegmentedControl() {
   document.querySelectorAll('.segmented-control label').forEach((label) => {
     label.classList.toggle("selected", label.querySelector("input").checked);
   });
+  renderSyringeScale(selectedCapacity());
+}
+
+function renderSyringeScale(capacity) {
+  const scale = byId("syringeScale");
+  const ticks = buildSyringeScale(capacity).map((tick) => {
+    const element = document.createElement("i");
+    element.className = `scale-tick ${tick.kind}`;
+    element.style.left = `${tick.percent}%`;
+    if (tick.label !== null) {
+      const label = document.createElement("span");
+      label.textContent = tick.label;
+      element.append(label);
+    }
+    return element;
+  });
+  scale.replaceChildren(...ticks);
+  byId("syringeScaleTitle").textContent = `ESCALA ${capacity} UI // ${formatNumber(capacity / 100, 1)} ML`;
+  byId("syringeCapacityText").textContent = `CAP. ${capacity} UI`;
 }
 
 function appendListItems(list, values) {
@@ -52,12 +73,19 @@ function appendListItems(list, values) {
 }
 
 function renderResult(data, capacity) {
+  const presentation = getSyringePresentation(data.syringeUnits, capacity);
+  renderSyringeScale(capacity);
   byId("syringeUnitsResult").textContent = `${formatPositiveMeasurement(data.syringeUnits)} unidades U-100`;
   byId("volumeResult").textContent = `${formatPositiveMeasurement(data.volumeMl)} mL`;
-  byId("syringeFill").style.width = `${Math.min(100, Math.max(0, (data.syringeUnits / capacity) * 100))}%`;
+  byId("syringeFill").style.width = `${presentation.fillPercent}%`;
+  byId("syringeMarker").style.left = `${presentation.markerPercent}%`;
+  byId("syringeMarkerLabel").textContent = `${formatPositiveMeasurement(data.syringeUnits)} UI`;
+  byId("syringeDigitalReadout").textContent = `${formatNumber(data.syringeUnits, 2)} UI`;
+  byId("syringeFigure").classList.toggle("is-overflow", presentation.overflow);
   byId("syringeFigure").setAttribute("aria-label", `Seringa U-100 preenchida aproximadamente em ${formatPositiveMeasurement(data.syringeUnits)} de ${capacity} unidades`);
-  byId("syringeCapacityText").textContent = `Capacidade: ${capacity} U-100`;
-  byId("syringeMaximum").textContent = `${capacity} U`;
+  byId("syringeCaption").textContent = presentation.overflow
+    ? `O resultado ultrapassa a capacidade de ${capacity} UI. Não tente representar o excesso nesta seringa.`
+    : "Cada marca pequena representa 1 UI. Confirme a escala física da sua seringa.";
   byId("doseMgResult").textContent = `${formatNumber(data.doseMg, 4)} mg`;
   byId("doseMcgResult").textContent = `${formatNumber(data.doseMcg, 2)} mcg`;
   byId("concentrationMgResult").textContent = `${formatNumber(data.concentrationMgMl, 4)} mg/mL`;
