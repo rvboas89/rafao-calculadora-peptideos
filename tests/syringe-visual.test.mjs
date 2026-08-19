@@ -32,3 +32,21 @@ test("posiciona o líquido e o marcador conforme a capacidade selecionada", asyn
     overflow: true,
   });
 });
+
+test("diferencia fisicamente as seringas de 50 UI e 100 UI", async () => {
+  const { getSyringeGeometry } = await import("../syringe-visual.mjs");
+  assert.equal(typeof getSyringeGeometry, "function", "getSyringeGeometry precisa existir");
+
+  assert.deepEqual(getSyringeGeometry(50), {
+    className: "capacity-50",
+    maximumLabel: "50 UI MAX",
+    volumeLabel: "0,5 mL",
+    barrelPercent: 72,
+  });
+  assert.deepEqual(getSyringeGeometry(100), {
+    className: "capacity-100",
+    maximumLabel: "100 UI MAX",
+    volumeLabel: "1,0 mL",
+    barrelPercent: 100,
+  });
+});
