@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#062b37">
+    <meta name="description" content="Conversões matemáticas de diluição para seringas U-100, com doses em mg ou mcg.">
+    <title>Rafão Calculadora de Peptídeos</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icon.svg">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="calculator-shell">
+      <div class="calculator-frame">
+        <header class="hero">
+          <p class="eyebrow">Conversões de diluição</p>
+          <h1>Rafão Calculadora de Peptídeos</h1>
+          <p>Use os dados do seu frasco e da diluição para visualizar a conversão em uma seringa U-100.</p>
+          <div class="share-actions">
+            <button type="button" id="shareButton" class="header-button">Compartilhar</button>
+            <button type="button" id="whatsAppButton" class="header-button header-button-secondary">Enviar pelo WhatsApp</button>
+            <button type="button" id="installButton" class="header-button header-button-secondary" hidden>Instalar no celular</button>
+          </div>
+        </header>
+
+        <aside class="clinical-note">
+          <p><strong>Uso informativo:</strong> esta ferramenta realiza conversões matemáticas e não recomenda dose, frequência ou tratamento. Confirme os dados com um profissional habilitado antes de qualquer aplicação.</p>
+          <p><strong>Seringa U-100:</strong> confirme no rótulo que sua seringa é U-100. Seringas com outra calibração produzem resultados diferentes. A representação da seringa é apenas aproximada e não substitui as marcações físicas.</p>
+        </aside>
+
+        <form id="calculatorForm" class="calculator-card" novalidate>
+          <section aria-labelledby="frasco-title">
+            <h2 id="frasco-title">Frasco e diluição</h2>
+            <div class="field-grid">
+              <label>
+                <span>Conteúdo por frasco (mg)</span>
+                <input id="vialMg" inputmode="decimal" value="5" placeholder="Ex.: 5" aria-describedby="numero-ajuda">
+              </label>
+              <label>
+                <span>Quantidade de frascos</span>
+                <input id="vialCount" inputmode="numeric" value="1" placeholder="Ex.: 1">
+              </label>
+              <label class="field-wide">
+                <span>Água adicionada por frasco (mL)</span>
+                <input id="waterMl" inputmode="decimal" value="2" placeholder="Ex.: 2">
+              </label>
+            </div>
+            <p id="numero-ajuda" class="field-help">Você pode usar vírgula ou ponto nos números.</p>
+          </section>
+
+          <section aria-labelledby="dose-title">
+            <h2 id="dose-title">Dose informada</h2>
+            <div class="dose-row">
+              <label>
+                <span>Valor da dose</span>
+                <input id="doseValue" inputmode="decimal" value="250" placeholder="Ex.: 250">
+              </label>
+              <label>
+                <span>Unidade</span>
+                <select id="doseUnit">
+                  <option value="mcg">mcg</option>
+                  <option value="mg">mg</option>
+                </select>
+              </label>
+            </div>
+            <p id="conversion" class="conversion" aria-live="polite"></p>
+          </section>
+
+          <section aria-labelledby="seringa-title">
+            <h2 id="seringa-title">Seringa U-100</h2>
+            <div class="segmented-control" role="radiogroup" aria-label="Capacidade da seringa">
+              <label class="selected">
+                <input type="radio" name="syringeCapacity" value="50" checked>
+                <span>50 unidades</span>
+              </label>
+              <label>
+                <input type="radio" name="syringeCapacity" value="100">
+                <span>100 unidades</span>
+              </label>
+            </div>
+          </section>
+
+          <section aria-labelledby="frequencia-title">
+            <h2 id="frequencia-title">Frequência informada</h2>
+            <div class="frequency-row">
+              <label>
+                <span>Tipo</span>
+                <select id="frequencyMode">
+                  <option value="perDay">Doses por dia</option>
+                  <option value="interval">Intervalo entre doses</option>
+                </select>
+              </label>
+              <label>
+                <span id="frequencyLabel">Doses por dia</span>
+                <input id="frequencyValue" inputmode="decimal" value="1" placeholder="Ex.: 1">
+              </label>
+            </div>
+          </section>
+
+          <div class="form-actions">
+            <button type="submit">Calcular quanto puxar</button>
+            <button type="button" id="clearButton" class="secondary-button">Limpar cálculo</button>
+          </div>
+        </form>
+
+        <section id="errorPanel" class="error-panel" aria-live="assertive" aria-labelledby="erro-title" hidden>
+          <h2 id="erro-title">Revise os campos</h2>
+          <ul id="errorList"></ul>
+        </section>
+
+        <section id="resultCard" class="result-card" role="status" aria-live="polite" aria-atomic="true" aria-labelledby="resultado-title" hidden>
+          <div class="result-heading">
+            <div>
+              <p class="eyebrow">Resultado matemático</p>
+              <h2 id="resultado-title">Quanto puxar na seringa</h2>
+            </div>
+          </div>
+          <div class="primary-result">
+            <span id="syringeUnitsResult"></span>
+            <small id="volumeResult"></small>
+          </div>
+          <figure id="syringeFigure" class="syringe-figure">
+            <div class="syringe-body" aria-hidden="true">
+              <div id="syringeFill" class="syringe-fill"></div>
+              <div class="syringe-ticks"></div>
+              <div class="syringe-plunger"></div>
+            </div>
+            <figcaption><span>0 U</span><strong id="syringeCapacityText"></strong><span id="syringeMaximum"></span></figcaption>
+          </figure>
+          <dl class="result-grid">
+            <div><dt>Dose equivalente</dt><dd id="doseMgResult"></dd><small id="doseMcgResult"></small></div>
+            <div><dt>Concentração</dt><dd id="concentrationMgResult"></dd><small id="concentrationMcgResult"></small></div>
+            <div><dt>Doses completas</dt><dd id="dosesPerVialResult"></dd><small id="totalDosesResult"></small></div>
+            <div><dt>Restante após doses completas</dt><dd id="remainderPerVialMgResult"></dd><small id="remainderPerVialMcgResult"></small></div>
+            <div class="result-grid-wide"><dt>Restante total</dt><dd id="totalRemainderMgResult"></dd><small id="totalRemainderMcgResult"></small></div>
+            <div class="result-grid-wide"><dt>Duração estimada do estoque</dt><dd id="durationResult"></dd></div>
+          </dl>
+          <p class="result-disclaimer">Os valores de estoque e duração são teóricos e não incluem perdas por reconstituição, espaço morto ou retenção no frasco ou na seringa.</p>
+          <aside id="warningPanel" class="warning-panel" aria-labelledby="alertas-title" hidden>
+            <h3 id="alertas-title">Atenção antes de aplicar</h3>
+            <ul id="warningList"></ul>
+          </aside>
+        </section>
+
+        <footer>Não armazena dados, não substitui orientação clínica e não indica dosagens.</footer>
+      </div>
+    </main>
+    <script type="module" src="./app.mjs"></script>
+  </body>
+</html>
